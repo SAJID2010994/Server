@@ -6,6 +6,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "peerjs": "^1.4.7",
+    "peerjs": "^1.4.7"
   }
 }
