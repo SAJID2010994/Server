@@ -1,22 +1,24 @@
-const Express = require("express");
-const { ExpressPeerServer } = require("peer");
+// Run this with Node JS.
+// Try renaming this file to `index.js` and running `node index.js`
+// You'll need to `npm install peer`
 
-const app = Express();
 
-// Set port from Render environment or default 9000
-const PORT = process.env.PORT || 9000;
+const { PeerServer } = require("peer");
 
-// Basic route to test
-app.get("/", (req, res) => res.send("PeerJS server is running"));
+const PORT = 9001;
 
-// Create a PeerJS server
-const server = app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const peerServer = PeerServer({
+  port: PORT, key:"demodemo", path: "/myapp",
+  allow_discovery: true,
 });
 
-const peerServer = ExpressPeerServer(server, {
-  debug: true,          // Logs connections and events
-  path: "/myapp"        // You can choose any path
-});
 
-app.use("/peerjs", peerServer);
+peerServer.on("connection", c => {
+  console.log("connection ID:", c.id)
+})
+
+peerServer.on("disconnect", c => {
+  console.log("disconnect!", c.id)
+})
+
+console.log(`Running Peer JS Server on port ${PORT}.`)
